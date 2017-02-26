@@ -1,0 +1,24 @@
+{
+  "name": "Blamazon",
+  "version": "1.0.0",
+  "description": "Command-Line Amazon like tool to demo JS and Mysql",
+  "main": "blamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbool24/Blamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbool24/Blamazon/issues"
+  },
+  "homepage": "https://github.com/jbool24/Blamazon#readme",
+  "dependencies": {
+    "inquirer": "^3.0.4",
+    "mysql": "^2.13.0"
+  }
+}
