@@ -1,5 +1,6 @@
 const db = require('./database');
 
+
 exports.displayAllProducts = function allProducts() {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM products', (err, data) => {
@@ -23,6 +24,22 @@ exports.displayAllProducts = function allProducts() {
     })
 }
 
+exports.productList = function productList() {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM products', (err, data) => {
+            if (err)
+                reject(err);
+
+            let list = data.map((d, idx) => {
+                return (idx + 1) + " " + d.product_name;
+            });
+
+            resolve(list);
+        });
+    });
+}
+
+
 exports.productInfo = function productInfo(field, next) {
     db.query('SELECT ?? FROM products', [field], (err, data) => {
 
@@ -33,9 +50,30 @@ exports.productInfo = function productInfo(field, next) {
     });
 }
 
-exports.getCurrentStock = function getCurrentStock(productID, dataHandler) {
-    db.query('SELECT stock_quantity FROM products where _id = ?', productID, (err, data) => {
-        return dataHandler(data);
+exports.validatePurchase = function validatePurchase(order) {
+
+    return new Promise((resolve, reject) => {
+        getCurrentStock(order.product).then((stock) => {
+
+            if (stock >= order.quantity) {
+              resolve({ result: true, amount: stock });
+            } else {
+              reject("Sorry. There is no stock right now.");
+            }
+        }).catch((err) => console.log(err));
+    })
+}
+
+exports.getCurrentStock = getCurrentStock;
+
+function getCurrentStock(productID) {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT stock_quantity FROM products where _id = ?', productID, (err, data) => {
+            if (err)
+                reject(err);
+
+            resolve(data[0].stock_quantity);
+        });
     });
 }
 
